@@ -10,6 +10,12 @@
 import Foundation
 
 // MARK: - Methods
+extension UserDefaults {
+    func set<T: Encodable>(object: T, byKey key: String) throws {
+        try self.set(JSONEncoder().encode(object), forKey: key)
+    }
+}
+
 public extension UserDefaults {
 
 	/// SwifterSwift: get object from UserDefaults by using subscript
