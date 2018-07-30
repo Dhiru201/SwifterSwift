@@ -11,6 +11,17 @@ import UIKit
 
 #if !os(watchOS)
 // MARK: - Enums
+extension UITextField {
+    @IBInspectable var localizedPlaceholder: String {
+        get {
+            return self.placeholder ?? ""
+        }
+        set {
+            self.placeholder = NSLocalizedString(newValue, comment: "")
+        }
+    }
+}
+
 public extension UITextField {
 
 	/// SwifterSwift: UITextField text type.

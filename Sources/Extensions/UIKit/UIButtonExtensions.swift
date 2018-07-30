@@ -11,6 +11,17 @@ import UIKit
 
 #if !os(watchOS)
 // MARK: - Properties
+extension UIButton {
+    @IBInspectable var localizedTitle: String {
+        get {
+            return self.currentTitle ?? ""
+        }
+        set {
+            self.setTitle(NSLocalizedString(newValue, comment: ""), for: .normal)
+        }
+    }
+}
+
 public extension UIButton {
 
 	/// SwifterSwift: Image of disabled state for button; also inspectable from Storyboard.

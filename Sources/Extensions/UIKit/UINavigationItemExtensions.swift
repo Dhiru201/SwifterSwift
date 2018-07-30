@@ -11,6 +11,17 @@ import UIKit
 
 #if !os(watchOS)
 // MARK: - Methods
+extension UINavigationItem {
+    @IBInspectable var localizedTitle: String {
+        get {
+            return self.title ?? ""
+        }
+        set {
+            self.title = NSLocalizedString(newValue, comment: "")
+        }
+    }
+}
+
 public extension UINavigationItem {
 
 	/// SwifterSwift: Replace title label with an image in navigation item.

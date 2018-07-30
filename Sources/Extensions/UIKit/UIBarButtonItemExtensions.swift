@@ -11,6 +11,18 @@ import UIKit
 
 #if !os(watchOS)
 // MARK: - Methods
+extension UIBarButtonItem {
+    @IBInspectable var localizedTitle: String {
+        get {
+            return self.title ?? ""
+        }
+        set {
+            self.title = NSLocalizedString(newValue, comment: "")
+        }
+    }
+}
+
+
 public extension UIBarButtonItem {
 
 	/// SwifterSwift: Add Target to UIBarButtonItem

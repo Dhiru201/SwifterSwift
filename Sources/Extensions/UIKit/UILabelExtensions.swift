@@ -11,6 +11,17 @@ import UIKit
 
 #if !os(watchOS)
 // MARK: - Methods
+extension UILabel {
+    @IBInspectable var localizedText: String {
+        get {
+            return self.text ?? ""
+        }
+        set {
+            self.text = NSLocalizedString(newValue, comment: "")
+        }
+    }
+}
+
 public extension UILabel {
 
 	/// SwifterSwift: Initialize a UILabel with text

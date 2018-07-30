@@ -11,6 +11,17 @@ import UIKit
 
 #if !os(watchOS)
 // MARK: - Properties
+extension UIViewController {
+    @IBInspectable var localizedTitle: String {
+        get {
+            return self.title ?? ""
+        }
+        set {
+            self.title = NSLocalizedString(newValue, comment: "")
+        }
+    }
+}
+
 public extension UIViewController {
 
 	/// SwifterSwift: Check if ViewController is onscreen and not hidden.
