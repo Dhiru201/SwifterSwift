@@ -1002,7 +1002,19 @@ public extension String {
         guard hasSuffix(suffix) else { return self }
         return String(dropLast(suffix.count))
     }
-
+    
+    /// Clear string from symbols
+    func getNumber() -> String? {
+        var text = self
+        text = text.replacingOccurrences(of: "+", with: "")
+        text = text.replacingOccurrences(of: "(", with: "")
+        text = text.replacingOccurrences(of: ")", with: "")
+        text = text.replacingOccurrences(of: " ", with: "")
+        text = text.replacingOccurrences(of: "_", with: "")
+        text = text.replacingOccurrences(of: "-", with: "")
+        text = text.replacingOccurrences(of: "*", with: "")
+        return text
+    }
 }
 
 // MARK: - Initializers
