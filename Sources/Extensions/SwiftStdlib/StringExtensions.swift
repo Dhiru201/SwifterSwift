@@ -1002,7 +1002,7 @@ public extension String {
         guard hasSuffix(suffix) else { return self }
         return String(dropLast(suffix.count))
     }
-    
+
     /// Clear string from symbols
     func getNumber() -> String? {
         var text = self
