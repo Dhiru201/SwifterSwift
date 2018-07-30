@@ -171,6 +171,76 @@ public extension UITextField {
 
 }
 
+extension UITextField {
+
+    public typealias TextFieldConfig = (UITextField) -> Swift.Void
+
+    public func config(textField configurate: TextFieldConfig?) {
+        configurate?(self)
+    }
+
+    func left(image: UIImage?, color: UIColor = .black) {
+        if let image = image {
+            leftViewMode = UITextFieldViewMode.always
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+            imageView.contentMode = .scaleAspectFit
+            imageView.image = image
+            imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
+            imageView.tintColor = color
+            leftView = imageView
+        } else {
+            leftViewMode = UITextFieldViewMode.never
+            leftView = nil
+        }
+    }
+
+    func right(image: UIImage?, color: UIColor = .black) {
+        if let image = image {
+            rightViewMode = UITextFieldViewMode.always
+            let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+            imageView.contentMode = .scaleAspectFit
+            imageView.image = image
+            imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
+            imageView.tintColor = color
+            rightView = imageView
+        } else {
+            rightViewMode = UITextFieldViewMode.never
+            rightView = nil
+        }
+    }
+}
+
+extension UITextField {
+    @IBInspectable var doneAccessory: Bool {
+        get {
+            return self.doneAccessory
+        }
+        set (hasDone) {
+            if hasDone {
+                addDoneButtonOnKeyboard()
+            }
+        }
+    }
+
+    func addDoneButtonOnKeyboard() {
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done: UIBarButtonItem = UIBarButtonItem(title: "Готово", style: .done, target: self, action: #selector(self.doneButtonAction))
+        let items = [flexSpace, done]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+
+        self.inputAccessoryView = doneToolbar
+    }
+
+    @objc
+    func doneButtonAction() {
+        self.resignFirstResponder()
+    }
+}
+
 #endif
 
 #endif
