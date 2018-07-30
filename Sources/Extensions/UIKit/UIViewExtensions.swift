@@ -59,7 +59,18 @@ public enum ShakeAnimationType {
 // MARK: - Properties
 public extension UIView {
 
-	/// SwifterSwift: Border color of view; also inspectable from Storyboard.
+    @IBInspectable
+    /// Should the corner be as circle
+    public var circleCorner: Bool {
+        get {
+            return min(bounds.size.height, bounds.size.width) / 2 == cornerRadius
+        }
+        set {
+            cornerRadius = newValue ? min(bounds.size.height, bounds.size.width) / 2 : cornerRadius
+        }
+    }
+
+    /// SwifterSwift: Border color of view; also inspectable from Storyboard.
 	@IBInspectable public var borderColor: UIColor? {
 		get {
 			guard let color = layer.borderColor else { return nil }
@@ -168,6 +179,17 @@ public extension UIView {
 		}
 	}
 
+    @IBInspectable
+    /// Corner radius of view; also inspectable from Storyboard.
+    public var maskToBounds: Bool {
+        get {
+            return layer.masksToBounds
+        }
+        set {
+            layer.masksToBounds = newValue
+        }
+    }
+
 	/// SwifterSwift: Size of view.
 	public var size: CGSize {
 		get {
@@ -227,6 +249,46 @@ public extension UIView {
 
 // MARK: - Methods
 public extension UIView {
+
+    func searchVisualEffectsSubview() -> UIVisualEffectView? {
+        if let visualEffectView = self as? UIVisualEffectView {
+            return visualEffectView
+        } else {
+            for subview in subviews {
+                if let found = subview.searchVisualEffectsSubview() {
+                    return found
+                }
+            }
+        }
+        return nil
+    }
+
+    /// This is the function to get subViews of a view of a particular type
+    /// https://stackoverflow.com/a/45297466/5321670
+    func subViews<T: UIView>(type: T.Type) -> [T] {
+        var all = [T]()
+        for view in self.subviews {
+            if let aView = view as? T {
+                all.append(aView)
+            }
+        }
+        return all
+    }
+
+    /// This is a function to get subViews of a particular type from view recursively. It would look recursively in all subviews and return back the subviews of the type T
+    /// https://stackoverflow.com/a/45297466/5321670
+    func allSubViewsOf<T: UIView>(type: T.Type) -> [T] {
+        var all = [T]()
+        func getSubview(view: UIView) {
+            if let aView = view as? T {
+                all.append(aView)
+            }
+            guard view.subviews.count>0 else { return }
+            view.subviews.forEach { getSubview(view: $0) }
+        }
+        getSubview(view: self)
+        return all
+    }
 
     /// SwifterSwift: Recursively find the first responder.
     public func firstResponder() -> UIView? {
