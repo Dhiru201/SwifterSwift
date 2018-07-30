@@ -22,7 +22,6 @@ extension UIBarButtonItem {
     }
 }
 
-
 public extension UIBarButtonItem {
 
 	/// SwifterSwift: Add Target to UIBarButtonItem

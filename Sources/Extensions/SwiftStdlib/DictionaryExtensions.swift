@@ -175,16 +175,16 @@ public extension Dictionary {
     public static func -= <S: Sequence>(lhs: inout [Key: Value], keys: S) where S.Element == Key {
         lhs.removeAll(keys: keys)
     }
-    
+
     /// Dictionary specific map function that returns a dictionary, not an array
-    func map<K : Hashable, V>(_ transform: ((Key, Value)) -> (K, V)) -> [K : V] {
-        var result = [K : V]()
-        
+    func map<K: Hashable, V>(_ transform: ((Key, Value)) -> (K, V)) -> [K: V] {
+        var result = [K: V]()
+
         for keyValue in self {
             let transformed = transform(keyValue)
             result[transformed.0] = transformed.1
         }
-        
+
         return result
     }
 }

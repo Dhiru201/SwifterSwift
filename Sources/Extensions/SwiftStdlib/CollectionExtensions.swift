@@ -188,3 +188,81 @@ public extension Collection where Element: FloatingPoint {
     }
 
 }
+
+extension Collection where Indices.Iterator.Element == Index {
+    /// Returns subrange of collection's elements if specified range of indices lies within collection's bounds, otherwise nil.
+    subscript(safe bounds: Range<Index>) -> SubSequence? {
+        guard indices.contains(bounds.lowerBound) else {
+            return nil
+        }
+
+        if !indices.contains(bounds.upperBound) {
+            return self[bounds.lowerBound..<self.endIndex]
+        }
+        return self[bounds]
+    }
+}
+
+public extension RangeReplaceableCollection where Iterator.Element: Equatable {
+    mutating func remove(_ element: Iterator.Element) {
+        if let index = self.index(of: element) {
+            remove(at: index)
+        }
+    }
+
+    func findFirst(_ element: Iterator.Element) -> Iterator.Element? {
+        if let index = self.index(of: element) {
+            return self[index]
+        }
+
+        return nil
+    }
+}
+
+public extension RangeReplaceableCollection {
+    mutating func remove(_ predicate: (Iterator.Element) -> Bool) {
+        if let index = self.index(where: predicate) {
+            remove(at: index)
+        }
+    }
+
+    mutating func removeAll(_ predicate: (Iterator.Element) -> Bool) {
+        let all = self.filter(predicate).count
+
+        for _ in 0..<all {
+            self.remove(predicate)
+        }
+    }
+
+    func findFirst(_ predicate: (Iterator.Element) -> Bool) -> Iterator.Element? {
+        if let index = self.index(where: predicate) {
+            return self[index]
+        }
+
+        return nil
+    }
+
+    /**
+     Finds an element in hierarchical structure
+     
+     - parameter predicate: closure defining whether an element is the one we want to find.
+     - parameter getChildren: closure that retrieves an next collection of elements from the element.
+     
+     - returns: the element you want to find
+     */
+    func findFirstRecursively(withPredicate predicate: (Iterator.Element) -> Bool,
+                              getChildren: (Iterator.Element) -> (Self)) -> Iterator.Element? {
+
+        if let result = findFirst(predicate) {
+            return result
+        }
+
+        for elem in self {
+            if let result = getChildren(elem).findFirstRecursively(withPredicate: predicate, getChildren: getChildren) {
+                return result
+            }
+        }
+
+        return nil
+    }
+}
