@@ -203,13 +203,4 @@ extension Collection where Indices.Iterator.Element == Index {
     
     return self[bounds]
   }
-  
-  /// An element at the specified index
-  ///
-  /// - Parameter index: element index
-  /// - Returns: an element at the specified index if it is within bounds, otherwise nil.
-  subscript(safe index: Int) -> Iterator.Element? {
-    guard let idx = index as? Index else { return nil }
-    return indices.contains(idx) ? self[idx] : nil
-  }
 }

@@ -1019,7 +1019,7 @@ public extension String {
     /// Get phone number from string
     ///
     /// - Returns: Phone number string after replacing characters
-    func getNumber() -> String? {
+    func getPhone() -> String? {
       var text = self
       
       text = text.replacingOccurrences(of: "+", with: "")
